@@ -6,6 +6,7 @@
 <div class="flex-center position-ref ">
     <div class="flex-center position-ref ">
         <div class="container pt-3">
+            <div id="alert"></div>
             <div class="card">
                 <div class="col-md-6">
                     <h2>Cadastro</h2>
@@ -56,9 +57,10 @@
             alert(data.msg);
         },
         error: function(error) {
-            Object.keys(error.responseJSON.errors).forEach((chave) => {
-                const valor = error.responseJSON.errors[chave];
-                alert(`Aviso: ${valor}`);
+            
+            Object.keys(error.responseJSON.errors).sort().reverse().forEach((chave) => {
+                var valor = error.responseJSON.errors[chave];
+                document.getElementById('alert').innerHTML = `<div class="alert alert-warning" role="alert">${valor}</div>`
             });
         }
         });

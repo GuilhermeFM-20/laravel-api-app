@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller{
 
-    public function __invoke(){
+    public function __invoke(Request $request){
 
-        $user = User::get();        
+        $filter = $request->input('filter');
+    
+        $user = User::where('name','like',"%$filter%")->orWhere('email','like',"$$filter$")->get();
 
         return  response()->json($user,200);
 
@@ -43,7 +45,7 @@ class UserController extends Controller{
         }
 
         if($request->password_verify != $request->password){
-            return response()->json(['errors' => 'Senhas diferentes.'], 422);
+            return response()->json(['errors' => ['password'=>'Senhas diferentes.']], 422);
         }
 
         // Pega a senha digitada e passa para md5.
@@ -69,7 +71,7 @@ class UserController extends Controller{
         }
 
         if($request->password_verify != $request->password){
-            return response()->json(['errors' => 'Senhas diferentes.'], 422);
+            return response()->json(['errors' => ['password'=>'Senhas diferentes.']], 422);
         }
 
         $user = User::find($id);
@@ -84,7 +86,7 @@ class UserController extends Controller{
         try{
             $user->save();
         }catch(Exception $e){
-            return response()->json(['errors' => 'Erro:'.$e->getMessage()], 422);
+            return response()->json(['errors' => ['Erro' => $e->getMessage()]], 422);
         }
 
         return  response()->json(['msg' => 'Usuário atualizado com sucesso.'],200);

@@ -55,10 +55,10 @@
             alert(data.msg);
         },
         error: function(error) {
-            Object.keys(error.responseJSON.errors).forEach((chave) => {
-                const valor = error.responseJSON.errors[chave];
-                alert(`Aviso: ${valor}`);
-            }); 
+            Object.keys(error.responseJSON.errors).sort().reverse().forEach((chave) => {
+                var valor = error.responseJSON.errors[chave];
+                document.getElementById('alert').innerHTML = `<div class="alert alert-warning" role="alert">${valor}</div>`
+            });
         }
         });
     });

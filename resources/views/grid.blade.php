@@ -6,7 +6,15 @@
     <div class="container pt-3">
         <div class="card ">
             <div class="row m-2">
-                <a href="/create" class="btn btn-success">Adicionar</a>
+                <div class="col-md-4 mb-3">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <a href="/create" class="btn btn-success mr-4">Adicionar</a>
+                        <button type="submit" id="btn" class="input-group-text" id="inputGroupPrepend2" >🔎</button>
+                        <input type="text" class="form-control" id="filter" placeholder="Busca" aria-describedby="inputGroupPrepend2">
+                      </div>
+                    </div>
+                  </div>
             </div>
 
             <table class="table">
@@ -56,6 +64,30 @@
                                 </tr>`;
             });
         }
+    });
+
+    $('#btn').click(function() {
+        $.ajax({
+            url: "http://localhost:8000/api/users/",
+            type: "GET",
+            data: {
+                filter: document.getElementById('filter').value
+            },
+            dataType: "json",
+            success: function(data) {
+                var tbody = document.getElementById('tbody');
+                tbody.innerHTML = '';
+                data.forEach(value => {
+                    tbody.innerHTML += `<tr>
+                                        <th>${value.id}</th>
+                                        <th class="esq">${value.name}</th>
+                                        <th class="esq">${value.email}</th>
+                                        <th><a href="/update/${value.id}" class="btn btn-info">Editar</a></th>
+                                        <th><a onclick="deleteUser(${value.id})" class="btn btn-danger">Excluir</a></th>
+                                    </tr>`;
+                });
+            }
+        });
     });
     
 </script>
