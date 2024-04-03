@@ -20,6 +20,13 @@ class UserController extends Controller{
 
     }
 
+    public function find(int $id){
+
+        return  response()->json(User::find($id),200);
+
+    }
+
+
     public function store(Request $request){
 
         //Função para validar os valores do request

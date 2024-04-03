@@ -12,11 +12,11 @@
                 <div class="form-group row p-2">
                     <div class="col-md-6">
                         <label>Nome:</label>
-                        <input type="text" name="name" id="name" value="{{$user->name}}" class="form-control">
+                        <input type="text" name="name" id="name"  class="form-control">
                     </div>
                     <div class="col-md-6">
                         <label>Email:</label>
-                        <input type="email" name="email" id="email" value="{{$user->email}}" class="form-control">
+                        <input type="email" name="email" id="email"  class="form-control">
                     </div>
                 </div>
                 <div class="form-group row  p-2">
@@ -40,9 +40,25 @@
 </div>
 <script>
 
+    const id = sessionStorage.getItem("id");
+
+    $.ajax({
+        url: "http://localhost:8000/api/users/"+id,
+        type: "GET",
+        success: function(data) {
+            document.getElementById('name').value = data.name;
+            document.getElementById('email').value = data.email;
+        },
+        error: function(error) {
+            window.location.href = "http://localhost:8000/";
+            alert('Dados não encontrados!');
+        }
+    });
+
     $(document).on('click', '#btnSubmit', function() {
+        
         $.ajax({
-        url: "http://localhost:8000/api/users/"+{{$user->id}},
+        url: "http://localhost:8000/api/users/"+id,
         type: "PUT",
         data: {
             name: document.getElementById('name').value,

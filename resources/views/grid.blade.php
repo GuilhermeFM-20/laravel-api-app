@@ -21,8 +21,8 @@
                 <thead class="thead">
                     <tr>
                         <th>Id</th>
-                        <th class="esq">Nome</th>
-                        <th class="esq">Email</th>
+                        <th>Nome</th>
+                        <th>Email</th>
                         <th width="5"></th>
                         <th width="5"></th>
                     </tr>
@@ -39,15 +39,23 @@
 <script>
     
     function deleteUser(id){
-        $.ajax({
-            url: "http://localhost:8000/api/users/"+id,
-            type: "DELETE",
-            success: function(data) {
-                window.location.reload();
-                alert(data.msg);
-            }
-        });
+        if(confirm(`O registro do id ${id} será excluído.`)){
+            $.ajax({
+                url: "http://localhost:8000/api/users/"+id,
+                type: "DELETE",
+                success: function(data) {
+                    window.location.reload();
+                    alert(data.msg);
+                }
+            });
+        }
     }
+
+    function editUser(id) {
+        sessionStorage.setItem("id", id);
+        window.location.href = "/update";
+    }
+    
 
     $.ajax({
         url: "http://localhost:8000/api/users/",
@@ -57,9 +65,9 @@
             data.forEach(value => {
                 document.getElementById('tbody').innerHTML += `<tr>
                                     <th>${value.id}</th>
-                                    <th class="esq">${value.name}</th>
-                                    <th class="esq">${value.email}</th>
-                                    <th><a href="/update/${value.id}" class="btn btn-info">Editar</a></th>
+                                    <th>${value.name}</th>
+                                    <th>${value.email}</th>
+                                    <th><a onclick="editUser(${value.id})" class="btn btn-info">Editar</a></th>
                                     <th><a onclick="deleteUser(${value.id})" class="btn btn-danger">Excluir</a></th>
                                 </tr>`;
             });
@@ -80,9 +88,9 @@
                 data.forEach(value => {
                     tbody.innerHTML += `<tr>
                                         <th>${value.id}</th>
-                                        <th class="esq">${value.name}</th>
-                                        <th class="esq">${value.email}</th>
-                                        <th><a href="/update/${value.id}" class="btn btn-info">Editar</a></th>
+                                        <th>${value.name}</th>
+                                        <th>${value.email}</th>
+                                        <th><a onclick="editUser(${value.id})" class="btn btn-info">Editar</a></th>
                                         <th><a onclick="deleteUser(${value.id})" class="btn btn-danger">Excluir</a></th>
                                     </tr>`;
                 });

@@ -22,7 +22,6 @@ Route::get('/create', function () {
     return view('create');
 });
 
-Route::get('/update/{id}', function (int $id) {
-    $user = User::find($id);
-    return view('update',['user' => $user]);
+Route::get('/update', function () {
+    return view('update');
 });
